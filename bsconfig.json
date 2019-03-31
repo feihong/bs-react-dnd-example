@@ -19,5 +19,8 @@
     "@ahrefs/bs-react-dnd",
     "reason-react"
   ],
+  "bsc-flags": [
+    "-open Belt"
+  ],
   "refmt": 3
 }

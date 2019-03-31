@@ -1,5 +1,3 @@
-open Belt;
-
 module Dnd = {
   let itemTypeId = "card";
 

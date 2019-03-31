@@ -1,22 +1,15 @@
-open Belt;
-
 // Return copy of given array, switching the elements at the given positions
-let switchElements = (array, i, j) =>
-  i == j ?
-    array :
-    (
-      switch (array->Array.get(i), array->Array.get(j)) {
-      | (Some(ei), Some(ej)) =>
-        array->Array.mapWithIndex((index, v) =>
-          switch (index) {
-          | index when index == i => ej
-          | index when index == j => ei
-          | _ => v
-          }
-        )
-      | _ => array
-      }
-    );
+let reorder = (arr, index1, index2) => {
+  let arr = Array.copy(arr);
+  switch (arr |> Js.Array.spliceInPlace(~pos=index1, ~remove=1, ~add=[||])) {
+  | [|removed|] =>
+    arr
+    |> Js.Array.spliceInPlace(~pos=index2, ~remove=0, ~add=[|removed|])
+    |> ignore
+  | _ => ()
+  };
+  arr;
+};
 
 type action =
   | MoveCard(int, int)
@@ -29,15 +22,10 @@ let component = ReasonReact.reducerComponent(__MODULE__);
 let make = _children => {
   ...component,
   initialState: () => {
-    cards: [|
-      {id: 1, text: "Write a cool JS library"},
-      {id: 2, text: "Make it generic enough"},
-      {id: 3, text: "Write README"},
-      {id: 4, text: "Create some examples"},
-      {id: 5, text: "Spam in Twitter and IRC to promote it"},
-      {id: 6, text: "???"},
-      {id: 7, text: "PROFIT"},
-    |],
+    cards:
+      Array.makeBy(30, i =>
+        {T.id: i, text: "Item " ++ string_of_int(i + 1)}
+      ),
   },
   reducer: (action, state) =>
     switch (action) {
@@ -50,7 +38,7 @@ let make = _children => {
       Js.log3("MoveCard:", dragIndex, hoverIndex);
 
       ReasonReact.Update({
-        cards: state.cards->switchElements(dragIndex, hoverIndex),
+        cards: state.cards->reorder(dragIndex, hoverIndex),
       });
     | DropCard(id, startIndex) =>
       ReasonReact.SideEffects(
