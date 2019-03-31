@@ -7,3 +7,7 @@ Install dependencies
 Start the server
 
     yarn start
+
+Alternate
+
+    python3 -m http.server
