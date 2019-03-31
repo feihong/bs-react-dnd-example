@@ -35,7 +35,7 @@ let make = _children => {
       let hoverIndex =
         cards |> Js.Array.findIndex(card => card.T.id == hoverId);
 
-      Js.log3("MoveCard:", dragIndex, hoverIndex);
+      // Js.log3("MoveCard:", dragIndex, hoverIndex);
 
       ReasonReact.Update({
         cards: state.cards->reorder(dragIndex, hoverIndex),

@@ -111,16 +111,16 @@ let make = (~id, ~text, ~index, ~moveCard, ~dropCard, _children) => {
                 <div
                   style={ReactDOMRe.Style.make(
                     ~display="flex",
-                    ~border=
-                      Printf.sprintf(
-                        "1px %s gray",
-                        dragSource##isDragging ? "dashed" : "solid",
-                      ),
                     ~padding="0.5rem 1rem",
                     ~marginBottom=".5rem",
-                    ~backgroundColor="white",
+                    ~backgroundColor=
+                      dragSource##isDragging ? "lightgrey" : "white",
+                    ~border=
+                      dragSource##isDragging ?
+                        "1px gray dashed" : "2px black solid",
                     ~cursor=dragSource##isDragging ? "grabbing" : "grab",
-                    ~opacity="1",
+                    // opacity here affects the item in the list, not the item being dragged
+                    ~opacity=dragSource##isDragging ? "0.5" : "1",
                     (),
                   )}>
                   {ReasonReact.string(text)}
