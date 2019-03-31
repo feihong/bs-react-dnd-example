@@ -109,7 +109,7 @@ let make = (~id, ~text, ~index, ~moveCard, ~dropCard, _children) => {
         <DragSourceWrapper props={"id": id, "startIndex": index}>
           ...{(~collectedProps as dragSource) =>
             dropTarget##connectDropTarget(
-              dragSource##connectDragPreview(
+              dragSource##connectDragSource(
                 <div
                   style={ReactDOMRe.Style.make(
                     ~display="flex",
@@ -121,25 +121,12 @@ let make = (~id, ~text, ~index, ~moveCard, ~dropCard, _children) => {
                     ~padding="0.5rem 1rem",
                     ~marginBottom=".5rem",
                     ~backgroundColor="white",
-                    ~opacity=dragSource##isDragging ? "0" : "1",
+                    ~cursor=dragSource##isDragging ? "grabbing" : "grab",
+                    ~opacity="1",
                     (),
                   )}>
-                  {dragSource##connectDragSource(
-                     <div
-                       style={ReactDOMRe.Style.make(
-                         ~cursor=dragSource##isDragging ? "grabbing" : "grab",
-                         ~borderRadius="5px",
-                         ~width="14px",
-                         ~height="14px",
-                         ~marginRight="0.5rem",
-                         ~backgroundColor="lightsalmon",
-                         (),
-                       )}
-                     />,
-                   )}
                   {ReasonReact.string(text)}
                 </div>,
-                BsReactDnd.DragSource.makeDragPreviewOptions(),
               ),
             )
           }
